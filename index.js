@@ -167,10 +167,43 @@ async function run() {
 
         });
 
+///manage all order
+app.get("/allOrders", async (req, res) => {
+    // console.log("hello");
+    const result = await usersCollection.find({}).toArray();
+    res.send(result);
+  });
+// delete all orders
+app.delete("/deleteOrder/:id", async (req, res) => {
+    console.log(req.params.id);
+    const result = await usersCollection.deleteOne({
+      _id: ObjectId(req.params.id),
+    });
+    res.send(result);
+  });
 
+// status update
+app.put("/statusUpdate/:id", async (req, res) => {
+    const filter = { _id: ObjectId(req.params.id) };
+    console.log(req.params.id);
+    const result = await usersCollection.updateOne(filter, {
+      $set: {
+        status: 'shipped',
+      },
+    });
+    res.send(result);
+    console.log(result);
+  });
 
-
-
+  //manageproducts delete
+  // delete all orders
+  app.delete("/products/deleteProduct/:id", async (req, res) => {
+    console.log(req.params.id);
+    const result = await productsCollection.deleteOne({
+      _id: ObjectId(req.params.id),
+    });
+    res.send(result);
+  });
 
 
     }
